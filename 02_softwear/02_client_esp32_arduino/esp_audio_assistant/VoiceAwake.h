@@ -38,6 +38,15 @@ void getVoiceWakeData(){
     //收到语音唤醒打开录音
     if(read1 == 1){
       isRecRemoteAutoStop = 1;
+    }else if(read1 == 2){
+      setVolume(21);
+    }else if(read1 == 3){
+      setVolume(5);
+    }else if(read1 == 4){
+      setVolume(13);
+    }else if(read1 == 5 || read1==6){
+      //停止音频
+      stopAudio();
     }
   }
 }

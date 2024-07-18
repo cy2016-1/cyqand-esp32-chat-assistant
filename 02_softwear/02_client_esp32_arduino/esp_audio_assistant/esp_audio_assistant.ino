@@ -1,8 +1,8 @@
 #include "Variable.h"
 #include "MyWifiMqttManager.h"
-#include "VoiceAwake.h"
 #include "AudioIn.h"
 #include "AudioOut.h"
+#include "VoiceAwake.h"
 
 //按键是否按下，判断录音与否
 bool BtnisPressed(void){

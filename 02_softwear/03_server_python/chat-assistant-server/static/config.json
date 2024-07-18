@@ -1,0 +1,66 @@
+{
+    "mqtt": {
+        "ip": "****************",
+        "port": 1883,
+        "username": "",
+        "password": ""
+    },
+    "devices": [],
+    "my_url": "http://10.168.0.20:5000",
+    "stt": {
+        "engines": [
+            "whisper",
+            "xunfei",
+            "fasterwhisper"
+        ],
+        "select": 2,
+        "xunfei": {
+            "appid": "*******",
+            "secret_key": "***************************"
+        }
+    },
+    "chat": {
+        "engines": [
+            "qingyunke",
+            "tongyi"
+        ],
+        "select": 0,
+        "tongyi_api_key": "***************************",
+        "regular_answers": [
+            {
+                "question": "世界上谁最帅",
+                "answer": "最帅的人是你呀，我的主人"
+            },
+            {
+                "question": "你好",
+                "answer": "你好呀主人"
+            }
+        ]
+    },
+    "tts": {
+        "engines": [
+            "edge"
+        ],
+        "select": 0,
+        "edge_voices": [
+            "zh-CN-XiaoxiaoNeural",
+            "zh-CN-XiaoyiNeural",
+            "zh-CN-YunjianNeural",
+            "zh-CN-YunxiNeural",
+            "zh-CN-YunxiaNeural",
+            "zh-CN-YunyangNeural",
+            "zh-CN-liaoning-XiaobeiNeural",
+            "zh-CN-shaanxi-XiaoniNeural",
+            "zh-HK-HiuGaaiNeural",
+            "zh-HK-HiuMaanNeural",
+            "zh-HK-WanLungNeural",
+            "zh-TW-HsiaoChenNeural",
+            "zh-TW-HsiaoYuNeural",
+            "zh-TW-YunJheNeural"
+        ],
+        "edge_voices_select": 0
+    },
+    "time_kipper": {
+        "devices": []
+    }
+}
