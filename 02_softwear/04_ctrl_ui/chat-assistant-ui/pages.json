@@ -1,0 +1,72 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "语音助手控制"
+			}
+		},
+		{
+			"path" : "pages/introduce/introduce",
+			"style" : 
+			{
+				"navigationBarTitleText" : "介绍"
+			}
+		},
+		{
+			"path" : "pages/set/set",
+			"style" : 
+			{
+				"navigationBarTitleText" : "设置"
+			}
+		},
+		{
+			"path" : "pages/recoder/recoder",
+			"style" : 
+			{
+				"navigationBarTitleText" : "录音"
+			}
+		},
+		{
+			"path" : "pages/regular-answer/regular-answer",
+			"style" : 
+			{
+				"navigationBarTitleText" : "固定回复词设置"
+			}
+		}
+	],
+	"tabBar": {
+	  "color": "#999999",
+	  "selectedColor": "#007AFF",
+	  "backgroundColor": "#ffffff",
+	  "borderStyle": "white",
+	  "list": [
+	    {
+	      "pagePath": "pages/index/index",
+	      "iconPath": "static/icon/tabbar/home.png",
+	      "selectedIconPath": "static/icon/tabbar/home1.png",
+	      "text": "控制"
+	    },
+		{
+		  "pagePath": "pages/set/set",
+		  "iconPath": "static/icon/tabbar/set.png",
+		  "selectedIconPath": "static/icon/tabbar/set1.png",
+		  "text": "设置"
+		},
+	    {
+	      "pagePath": "pages/introduce/introduce",
+	      "iconPath": "static/icon/tabbar/about.png",
+	      "selectedIconPath": "static/icon/tabbar/about1.png",
+	      "text": "关于"
+	    }
+	    // 其他 TabBarItem
+	  ]
+	},
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"uniIdRouter": {}
+}
