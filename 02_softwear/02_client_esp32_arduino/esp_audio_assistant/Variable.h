@@ -1,13 +1,14 @@
 //按键定义
-#define BTN 16
+#define SAYBTN 16
+#define WEBBTN 14
 
 //led定义
 #define LED 32
 #define LED2 33
-#define LED3 14
+#define LED3 13 //老版本为14
 
 //设备id-请用4位随机小写字母的组合
-String device_id = "ojun";
+String device_id = "erty";
 
 //wifi配置
 //主机配置时的ap设置

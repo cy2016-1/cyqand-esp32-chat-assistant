@@ -1,6 +1,9 @@
 # 一、mqtt及其接口功能:
+
 ## （一）设置类：下发
+
 ### topic:voice/assistant/ojun/set
+
 - 1、[mp3 url]:发送一个http开头的mp3文件可以直接播放。
 - 2、[stop]:停止播放音频。
 - 3、[vol11]:其中的数字设置音量大小-可以设置0-21。
@@ -10,22 +13,31 @@
 - 7、[reset]:重置wifi和mqtt并发射ap重新配网
 
 ## （二）状态类：上报
+
 ### topic:voice/assistant/ojun/available
+
 - 1、[online]:在线
 - 2、[offline]:离线
+
 ### topic:voice/assistant/ojun/state
+
 - 1、[record start]:开始录制
 - 2、[record end]:结束录制
 - 3、[play start]:开始播放
 - 4、[play end]:结束播放
 - 5、[数字]:来自语音模块的数据,可以判断数据用作唤醒/其他用途
+
 ### topic:voice/assistant/ojun/data
+
 上报音频数据用的topic
+
 ### topic:voice/assistant/register
+
 开机时注册服务器设备-已经存在的不会重复注册
 
 
 # 二、待实现功能：
+
 - 4、蓝牙功能?
 - 5、播放提示音-类似叮咚（唤醒、结束录音等时机播放）
 - 8、设计一个外壳
@@ -40,10 +52,12 @@
 
 
 # 三、bug:
+
 - 录音逻辑-按键录音有时无法在松开按键时结束录音-已解决:esp32开发板网络不好的原因。√
 
 
 # 四、已实现功能：
+
 - 1、固定录制几秒的功能-以提供接口-mqtt发送rec开始录音,发送end结束录音
 - 2、唤醒词设置及离线语音模块的设置-可以直达的语音命令不在单独设置到esp32语音模块内部
 - 3、多国家语言支持-与接入模型相关
@@ -87,10 +101,24 @@
 - 6、将inmp441变成3v3供电 √
 - 7、将麦克风都集成到板子上 √
 
-## 版本三：（最新）
-- 1、添加复位按钮-方便重启烧录
-- 2、添加重新配网按钮
-- 3、添加蜂鸣器?
+## 版本三：
+- 1、添加复位按钮-方便重启烧录 √
+- 2、添加重新配网按钮-io14-一共需要三个按钮-换成小的按钮 √
+- 3、添加蜂鸣器? ×
+- 4、led灯不要使用14引脚-io13 √
+- 5、减少开关数量/使用小的拨片开关 √
+- 6、放置元器件的时候要注意方向-max98357 √
+- 7、串口能不能公用？不能，但是能放在一起省空间 √
+- 8、选一个不是通孔的asrpro芯片封装 √
+- 9、增加电源模块 √
+- 10、c3电容更换为10uf √
+
+## 版本四：（最新）
+- 1、复位按键 √
+- 2、max98357a引脚号标记 √
+- 3、配网按键设置在内部 √
+- 4、电池接口防呆设计
+- 5、设备可以使用5v线路单独供电（由电源按键关闭时启动） √
 
 
 # 六、硬件代码编译需要的库
@@ -134,3 +162,110 @@
 
 
 ## （五）连接homeassistant
+示例代码如下：将此配置文件放在ha的configuration.yml中即可，另外请保证助手连接的mqtt服务器和ha连接的相同。
+注意：修改其中的id为你的设备id。
+```
+mqtt:
+  - switch:
+      name: "record"
+      unique_id: voice_assistant_record
+      command_topic: "voice/assistant/ojun/set"
+      payload_on: "rec"
+      payload_off: "end"
+      state_topic: "voice/assistant/ojun/state"
+      state_on: "record start"
+      state_off: "record end"
+      availability_topic: "voice/assistant/ojun/available"
+      device: 
+        name: voice-assistant-ojun
+        hw_version: 1.0.0
+        sw_version: 1.0.0
+        identifiers: 
+          - "voice-assistant-ojun"
+  - number:
+      name: "volume"
+      unique_id: voice_assistant_volume
+      command_topic: "voice/assistant/ojun/set"
+      availability_topic: "voice/assistant/ojun/available"
+      command_template: vol{{value}}
+      max: 21
+      min: 0
+      device: 
+        name: voice-assistant-ojun
+        hw_version: 1.0.0
+        sw_version: 1.0.0
+        identifiers: 
+          - "voice-assistant-ojun"
+  - text:
+      name: "play-audio-link"
+      unique_id: voice_assistant_play_audio
+      command_topic: "voice/assistant/ojun/set"
+      availability_topic: "voice/assistant/ojun/available"
+      device: 
+        name: voice-assistant-ojun
+        hw_version: 1.0.0
+        sw_version: 1.0.0
+        identifiers: 
+          - "voice-assistant-ojun"
+  - button:
+      name: "awake"
+      unique_id: voice_assistant_awake
+      command_topic: "voice/assistant/ojun/set"
+      command_template: "recandautostop"
+      availability_topic: "voice/assistant/ojun/available"
+      device: 
+        name: voice-assistant-ojun
+        hw_version: 1.0.0
+        sw_version: 1.0.0
+        identifiers: 
+          - "voice-assistant-ojun"
+  - button:
+      name: "stop-play"
+      unique_id: voice_assistant_stop_play
+      command_topic: "voice/assistant/ojun/set"
+      command_template: "stop"
+      availability_topic: "voice/assistant/ojun/available"
+      device: 
+        name: voice-assistant-ojun
+        hw_version: 1.0.0
+        sw_version: 1.0.0
+        identifiers: 
+          - "voice-assistant-ojun"
+  - sensor:
+    - name: "state"
+      unique_id: voice_assistant_state
+      state_topic: "voice/assistant/ojun/state"
+      availability_topic: "voice/assistant/ojun/available"
+      device: 
+        name: voice-assistant-ojun
+        hw_version: 1.0.0
+        sw_version: 1.0.0
+        identifiers: 
+          - "voice-assistant-ojun"
+  - binary_sensor:
+      name: "playing"
+      unique_id: voice_assistant_playing
+      state_topic: "voice/assistant/ojun/state"
+      payload_off: "play end"
+      payload_on: "play start"
+      availability_topic: "voice/assistant/ojun/available"
+      device: 
+        name: voice-assistant-ojun
+        hw_version: 1.0.0
+        sw_version: 1.0.0
+        identifiers: 
+          - "voice-assistant-ojun"
+  - binary_sensor:
+      name: "recording"
+      unique_id: voice_assistant_recording
+      state_topic: "voice/assistant/ojun/state"
+      payload_off: "record end"
+      payload_on: "record start"
+      availability_topic: "voice/assistant/ojun/available"
+      device: 
+        name: voice-assistant-ojun
+        hw_version: 1.0.0
+        sw_version: 1.0.0
+        identifiers: 
+          - "voice-assistant-ojun"
+```

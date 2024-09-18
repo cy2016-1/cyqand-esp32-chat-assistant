@@ -3,17 +3,31 @@
 #include "AudioIn.h"
 #include "AudioOut.h"
 #include "VoiceAwake.h"
+#include "OneButton.h"
 
-//按键是否按下，判断录音与否
+OneButton webbutton(WEBBTN, true);
+
+//说话按键是否按下，判断录音与否
 bool BtnisPressed(void){
   //读取按钮状态
-  bool key=digitalRead(BTN);
+  bool key=digitalRead(SAYBTN);
   //判断按钮状态
   if(1==key){
     return 0;
   }else{
     return 1 ;
   }
+}
+
+void webBtnClick(){
+  Serial.println("click");
+}
+
+//配网按键是否按下3秒，进行重新配网
+void webBtnLongPressed(){
+  Serial.println("resetting... web");
+  //重新配网
+  resetWifiMqtt();
 }
 
 //截取字符串
@@ -76,11 +90,14 @@ void setup() {
   pinMode(LED2, OUTPUT);
   pinMode(LED3, OUTPUT);
   //按键
-  pinMode(BTN, INPUT_PULLUP);
+  pinMode(SAYBTN, INPUT_PULLUP);
+  webbutton.attachClick(webBtnClick);
+  webbutton.setPressTicks(3000);
+  webbutton.attachLongPressStop(webBtnLongPressed);
   //设置14指示灯为关闭-否则会有微光-可能与单片机启动后引脚为高电平相关
   digitalWrite(LED3,LOW);
   //清除配置内容，用于测试（此部分可以不设置）
-  //void clearConfig();
+  //clearConfig();
   //设置参数（该部分可以不设置）-在init之前
   setWifiHostname(wifi_host_name);
   setMqttClientId(mqtt_client_id);
@@ -99,6 +116,8 @@ void setup() {
 }
 
 void loop() {
+  //onebutton按键监听
+  webbutton.tick();
   //mqtt循环获取值
   mqttLoop();
   //判断进行灯光设置
